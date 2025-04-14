@@ -55,9 +55,8 @@ bool f2fs_is_cp_guaranteed(struct page *page)
 	struct inode *inode;
 	struct f2fs_sb_info *sbi;
 
-	/* Handle fscrypt bounce pages by checking the underlying page. */
 	if (fscrypt_is_bounce_page(page))
-		return page_private_gcing(fscrypt_pagecache_page(page));
+		return false;
 
 	if (!mapping)
 		return false;
