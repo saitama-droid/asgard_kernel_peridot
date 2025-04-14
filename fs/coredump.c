@@ -563,12 +563,12 @@ static int umh_coredump_setup(struct subprocess_info *info, struct cred *new)
 	err = replace_fd(0, files[0], 0);
 	fput(files[0]);
 	if (err < 0)
-		goto out_fail;
+		return err;
 
 	/* and disallow core files too */
 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
 
-	err = 0;
+	return 0;
 
 out_fail:
 	if (pidfs_file)
