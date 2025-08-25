@@ -1124,6 +1124,9 @@ struct tcp_congestion_ops {
 	/* suggest number of segments for each skb to transmit (optional) */
 	u32 (*tso_segs_goal)(struct sock *sk);
 
+	/* react to a specific lost skb (optional) */
+	void (*skb_marked_lost)(struct sock *sk, const struct sk_buff *skb);
+
 	/* call when packets are delivered to update cwnd and pacing rate,
 	 * after all the ca_state processing. (optional)
 	 */
