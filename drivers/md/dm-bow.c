@@ -1203,16 +1203,12 @@ static void dm_bow_tablestatus(struct dm_target *ti, char *result,
 		result += scnprintf(result, end - result, "%s: %llu",
 				    readable_type[br->type],
 				    (unsigned long long)br->sector);
-		if (result >= end) {
-			mutex_unlock(&bc->ranges_lock);
-			return;
-		}
+		if (result >= end)
+			goto unlock;
 
 		result += scnprintf(result, end - result, "\n");
-		if (result >= end) {
-			mutex_unlock(&bc->ranges_lock);
-			return;
-		}
+		if (result >= end)
+			goto unlock;
 
 		if (br->type == TRIMMED)
 			++trimmed_range_count;

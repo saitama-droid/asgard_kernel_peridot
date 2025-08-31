@@ -3,6 +3,7 @@
  * Copyright (c) 2015, Sony Mobile Communications Inc.
  * Copyright (c) 2013, The Linux Foundation. All rights reserved.
  * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+ * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 #include <linux/kthread.h>
 #include <linux/module.h>
@@ -246,7 +247,8 @@ static void qrtr_log_tx_msg(struct qrtr_node *node, struct qrtr_hdr_v1 *hdr,
 
 	type = le32_to_cpu(hdr->type);
 	if (type == QRTR_TYPE_DATA) {
-		skb_copy_bits(skb, QRTR_HDR_MAX_SIZE, &pl_buf, sizeof(pl_buf));
+		skb_copy_bits(skb, sizeof(*hdr), &pl_buf, hdr->size > sizeof(pl_buf) ?
+				sizeof(pl_buf) : hdr->size);
 		QRTR_INFO(node->ilc,
 			  "TX DATA: Len:0x%x CF:0x%x src[0x%x:0x%x] dst[0x%x:0x%x] [%08x %08x] [%s]\n",
 			  hdr->size, hdr->confirm_rx,
@@ -294,7 +296,8 @@ static void qrtr_log_rx_msg(struct qrtr_node *node, struct sk_buff *skb)
 	cb = (struct qrtr_cb *)skb->cb;
 
 	if (cb->type == QRTR_TYPE_DATA) {
-		skb_copy_bits(skb, 0, &pl_buf, sizeof(pl_buf));
+		skb_copy_bits(skb, 0, &pl_buf, skb->len > sizeof(pl_buf) ?
+				sizeof(pl_buf) : skb->len);
 		QRTR_INFO(node->ilc,
 			  "RX DATA: Len:0x%x CF:0x%x src[0x%x:0x%x] dst[0x%x:0x%x] [%08x %08x]\n",
 			  skb->len, cb->confirm_rx, cb->src_node, cb->src_port,
@@ -1833,8 +1836,11 @@ static int qrtr_bcast_enqueue(struct qrtr_node *node, struct sk_buff *skb,
 {
 	struct sk_buff *skbn;
 
-	mutex_lock(&qrtr_node_lock);
-	list_for_each_entry(node, &qrtr_all_nodes, item) {
+	down_read(&qrtr_epts_lock);
+	list_for_each_entry(node, &qrtr_all_epts, item) {
+		if (node->nid == QRTR_EP_NID_AUTO && type != QRTR_TYPE_HELLO)
+			continue;
+
 		skbn = pskb_copy(skb, GFP_KERNEL);
 		if (!skbn)
 			break;
