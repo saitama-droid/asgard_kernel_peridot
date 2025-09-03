@@ -220,7 +220,18 @@
 					phandle = <0x4a>;
 				};
 
-				sdam@b600 {
+				
+sdam@a000 {
+    compatible = "qcom,spmi-sdam";
+    reg = <0xa000>;
+};
+
+sdam@a400 {
+    compatible = "qcom,spmi-sdam";
+    reg = <0xa400>;
+};
+
+                sdam@b600 {
 					compatible = "qcom,spmi-sdam";
 					reg = <0xb600>;
 					phandle = <0x4b>;
@@ -2607,7 +2618,7 @@
 				status = "ok";
 				compatible = "xiaomi,peridot-spi\0focaltech,n16t-3683g-spi";
 				reg = <0x00>;
-				spi-max-frequency = <19000000>;
+				spi-max-frequency = <15000000>;
 				interrupt-parent = <0xffffffff>;
 				interrupts = <0x81 0x2008>;
 				pinctrl-names = "pmx_ts_active\0pmx_ts_suspend";
