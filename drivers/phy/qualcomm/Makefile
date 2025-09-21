@@ -9,10 +9,11 @@ obj-$(CONFIG_PHY_QCOM_UFS)		+= phy-qcom-ufs.o
 obj-$(CONFIG_PHY_QCOM_UFS_V4)		+= phy-qcom-ufs-qmp-v4.o
 obj-$(CONFIG_PHY_QCOM_UFS_V3)           += phy-qcom-ufs-qmp-v3-660.o
 obj-$(CONFIG_PHY_QCOM_UFS_V4_PINEAPPLE)	+= phy-qcom-ufs-qmp-v4-pineapple.o
+obj-$(CONFIG_PHY_QCOM_UFS_V4_NIOBE)	+= phy-qcom-ufs-qmp-v4-niobe.o
 obj-$(CONFIG_PHY_QCOM_UFS_QRBTC_SDM845) += phy-qcom-ufs-qrbtc-sdm845.o
 obj-$(CONFIG_PHY_QCOM_UFS_V4_WAIPIO)    += phy-qcom-ufs-qmp-v4-waipio.o
 obj-$(CONFIG_PHY_QCOM_UFS_V4_BLAIR)	+= phy-qcom-ufs-qmp-v4-blair.o
-obj-$(CONFIG_PHY_QCOM_UFS_V4_LAHAINA)    += phy-qcom-ufs-qmp-v4-lahaina.o
+obj-$(CONFIG_PHY_QCOM_UFS_V4_LAHAINA)	+= phy-qcom-ufs-qmp-v4-lahaina.o
 obj-$(CONFIG_PHY_QCOM_UFS_V3_SM4350)	+= phy-qcom-ufs-qmp-v3.o
 
 obj-$(CONFIG_PHY_QCOM_QMP)		+= \
@@ -22,6 +23,7 @@ obj-$(CONFIG_PHY_QCOM_QMP)		+= \
 	phy-qcom-qmp-pcie-msm8996.o \
 	phy-qcom-qmp-ufs.o \
 	phy-qcom-qmp-usb.o
+obj-$(CONFIG_PHY_QCOM_UFS_V4_CROW)	+= phy-qcom-ufs-qmp-v4-crow.o
 
 obj-$(CONFIG_PHY_QCOM_QMP_COMBO)	+= phy-qcom-qmp-combo.o
 obj-$(CONFIG_PHY_QCOM_QMP_PCIE)		+= phy-qcom-qmp-pcie.o
